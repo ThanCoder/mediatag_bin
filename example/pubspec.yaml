@@ -9,7 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  mediatag_b:
+  mediatag_bin:
     path: ../
   android_native_path: ^0.1.0
   cupertino_icons: ^1.0.8

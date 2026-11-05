@@ -33,24 +33,36 @@ String getDesktopLibFullPath(String libName) {
   return File(libPath).absolute.path;
 }
 
-Future<void> makeExecutableAndRun(String filePath) async {
+Future<void> makeExecutableAndRun(
+  String filePath, {
+  bool showLog = true,
+}) async {
   try {
     // ၁။ chmod +x ပေးခြင်း
     final chmodResult = await Process.run('chmod', ['+x', filePath]);
 
     if (chmodResult.exitCode != 0) {
-      print('Failed to grant execution permission: ${chmodResult.stderr}');
+      if (showLog) {
+        print('Failed to grant execution permission: ${chmodResult.stderr}');
+      }
       return;
     }
-
-    print('Successfully granted execution permission!');
+    if (showLog) {
+      print('Successfully granted execution permission!: ${filePath.nameOnly}');
+    }
   } catch (e) {
-    print('Error: $e');
+    if (showLog) {
+      print('Error: $e');
+    }
   }
 }
 
 extension StringX on String {
   String join(String name) {
     return '$this${Platform.pathSeparator}$name';
+  }
+
+  String get nameOnly {
+    return split(Platform.pathSeparator).last;
   }
 }

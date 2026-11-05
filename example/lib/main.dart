@@ -4,12 +4,17 @@ import 'dart:io';
 
 import 'package:android_native_path/android_native_path.dart';
 import 'package:flutter/material.dart';
-import 'package:mediatag_b/mediatag_b.dart';
+import 'package:mediatag_bin/mediatag_bin.dart';
+import 'package:mediatag_bin/result_t.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await MediatagBinary.instance.initailize();
+  await MediatagBin.instance.initailize();
+
+  if (MediatagBin.instance.isSupported) {
+    //check platforms
+  }
 
   if (Platform.isAndroid) {
     print('[:Dev]: ${await AndroidNativePath.instance.nativeLibraries}');
@@ -26,12 +31,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final pkg = MediatagBinary.instance;
+  final pkg = MediatagBin.instance;
 
   String infoText = '';
 
   void fetchFFmpeg() async {
-    final res = await pkg.getFFmpegVersionInfo();
+    final res = await pkg.ffmpeg.getVersionOrNull();
     if (res != null) {
       infoText = res;
       setState(() {});
@@ -39,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void fetchProb() async {
-    final res = await pkg.getFFprobeVersionInfo();
+    final res = await pkg.ffprobe.getVersionOrNull();
     if (res != null) {
       infoText = res;
       setState(() {});
@@ -47,14 +52,14 @@ class _MyAppState extends State<MyApp> {
   }
 
   void showInfo(String path) async {
-    final res = await pkg.getFileInfo(path);
-    if (res.isOk) {
-      infoText = res.unwrap().text;
-      // final format = res.unwrap().toMap['format'];
-      // print(format);
-    }
-    if (res.isErr) {
-      infoText = res.unwrapError();
+    final res = await pkg.ffprobe.getFileInfo(path);
+    switch (res) {
+      case Ok(value: final val):
+        infoText = val.text;
+        break;
+      case Err(value: final err):
+        infoText = err;
+        break;
     }
     setState(() {});
   }
@@ -82,7 +87,12 @@ class _MyAppState extends State<MyApp> {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: _btns),
-          SliverToBoxAdapter(child: Text(infoText)),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(infoText),
+            ),
+          ),
         ],
       ),
     );
@@ -104,19 +114,19 @@ class _MyAppState extends State<MyApp> {
           child: Text('Audio Info'),
         ),
         FilledButton(
-          onPressed: () {
-            pkg.video
-                .genThumbnail(
-                  '/home/thancoder/Videos/Jennifer Body.mp4',
-                  '/home/thancoder/Videos/Jennifer Body',
-                )
-                .then((res) {
-                  if (res.isErr) {
-                    infoText = res.unwrapError();
-                    if (!mounted) return;
-                    setState(() {});
-                  }
-                });
+          onPressed: () async {
+            final res = await pkg.ffmpeg.video.genThumbnail(
+              '/home/thancoder/Videos/Jennifer Body.mp4',
+              '/home/thancoder/Videos/Jennifer Body',
+            );
+            switch (res) {
+              case Ok(value: final val):
+                print(val);
+                break;
+              case Err(value: final err):
+                print(err);
+                break;
+            }
           },
           child: Text('Gen Video Thumbnail'),
         ),

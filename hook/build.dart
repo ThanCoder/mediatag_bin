@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:archive/archive.dart';
 import 'package:code_assets/code_assets.dart';
 import 'package:hooks/hooks.dart';
-import 'package:mediatag_b/core/keys.dart';
+import 'package:mediatag_bin/core/keys.dart';
 import 'package:path/path.dart' as p;
 
 void main(List<String> args) async {

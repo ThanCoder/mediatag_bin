@@ -1,11 +1,80 @@
 # mediatag_b
 
+## Example List
+
+- [x][Example](#example)
+- [x][for-android](#for-android)
+
 ### Supported
-+ Linux
-+ Android
-+ Window
+
+- Linux
+- Android
+- Window
+
+### Example
+
+[Example List](#example-list)
+
+```dart
+WidgetsFlutterBinding.ensureInitialized();
+
+await MediatagBin.instance.initailize();
+
+if (MediatagBin.instance.isSupported) {
+//check platforms
+}
+
+final pkg = MediatagBin.instance;
+await pkg.ffmpeg.getVersionOrNull();
+await pkg.ffprobe.getVersionOrNull();
+
+// ffprobe
+final res = await pkg.ffprobe.getFileInfo(path);
+switch (res) {
+    case Ok(value: final val):
+        print(val);
+    break;
+    case Err(value: final err):
+        print(err);
+    break;
+}
+
+// video
+final res = await pkg.ffmpeg.video.genThumbnail(
+              '/home/thancoder/Videos/Jennifer Body.mp4',
+              '/home/thancoder/Videos/Jennifer Body',
+            );
+switch (res) {
+    case Ok(value: final val):
+    print(val);
+    break;
+    case Err(value: final err):
+    print(err);
+    break;
+}
+
+// audio
+await pkg.ffmpeg.audio.getCoverArtBytes(path);
+await pkg.ffmpeg.audio.writeCoverArt(
+    path,
+    outpath,
+    coverArtPath: coverArtPath,
+);
+await pkg.ffmpeg.audio.writeTags(
+    path,
+    outpath,
+    title: title,
+    artist: artist,
+    album: album,
+    genre: genre,
+    date: date,
+);
+
+```
 
 ### For Android
+
+[Example List](#example-list)
 
 ```kts
 
