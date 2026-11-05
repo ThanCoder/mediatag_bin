@@ -32,10 +32,28 @@ await pkg.ffprobe.getVersionOrNull();
 final res = await pkg.ffprobe.getFileInfo(path);
 switch (res) {
     case Ok(value: final val):
-        print(val);
+    infoText = val.text;
+    print(val.format.filename);
+
+    print(val.format.duration);
+    print(val.format.szieLable);
+    print('tag');
+    print(val.format.tag.titleOrNull);
+    print(val.format.tag.artistOrNull);
+    print(val.format.tag.genreOrNull);
+    print(val.format.tag.dateOrNull);
+
+    for (var stm in val.streams) {
+        print(stm.codecType);
+        print(stm.codecName);
+        print(stm.bitRate);
+        print(stm.channels);
+        print(stm.durationTs);
+        print(stm.duration);
+    }
     break;
     case Err(value: final err):
-        print(err);
+    infoText = err;
     break;
 }
 

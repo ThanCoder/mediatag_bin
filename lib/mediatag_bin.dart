@@ -22,11 +22,11 @@ class MediatagBin {
   late String _ffprobeLibPath;
 
   /// binary initailize
-  Future<void> initailize() async {
+  Future<void> initailize({bool showDebugLog = true}) async {
     _ffmpegLibPath = await getPlatformLibFullPath(ffmpegLibName);
     _ffprobeLibPath = await getPlatformLibFullPath(ffprobeLibName);
 
-    await makeExecutableAndRun(_ffmpegLibPath);
-    await makeExecutableAndRun(_ffprobeLibPath);
+    await makeExecutableAndRun(_ffmpegLibPath, showDebugLog: showDebugLog);
+    await makeExecutableAndRun(_ffprobeLibPath, showDebugLog: showDebugLog);
   }
 }

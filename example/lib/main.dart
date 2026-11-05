@@ -56,6 +56,24 @@ class _MyAppState extends State<MyApp> {
     switch (res) {
       case Ok(value: final val):
         infoText = val.text;
+        print(val.format.filename);
+
+        print(val.format.duration);
+        print(val.format.szieLable);
+        print('tag');
+        print(val.format.tag.titleOrNull);
+        print(val.format.tag.artistOrNull);
+        print(val.format.tag.genreOrNull);
+        print(val.format.tag.dateOrNull);
+
+        for (var stm in val.streams) {
+          print(stm.codecType);
+          print(stm.codecName);
+          print(stm.bitRate);
+          print(stm.channels);
+          print(stm.durationTs);
+          print(stm.duration);
+        }
         break;
       case Err(value: final err):
         infoText = err;
@@ -90,7 +108,7 @@ class _MyAppState extends State<MyApp> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(infoText),
+              child: SelectableText(infoText),
             ),
           ),
         ],
@@ -112,6 +130,10 @@ class _MyAppState extends State<MyApp> {
             '/home/thancoder/Music/The Crew - Get Low [GMV] [oQ6KD_FTix0].m4a',
           ),
           child: Text('Audio Info'),
+        ),
+        FilledButton(
+          onPressed: () => showInfo('/home/thancoder/Music/test1.mp3'),
+          child: Text('Audio Info2'),
         ),
         FilledButton(
           onPressed: () async {
