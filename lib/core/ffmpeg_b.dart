@@ -8,6 +8,6 @@ class FFmpegB extends IBinary {
   ///video commands
   late final VideoTag video = VideoTag(this);
 
-  /// audio command
+  /// audio commands
   late final AudioB audio = AudioB(this);
 }

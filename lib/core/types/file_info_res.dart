@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:mediatag_bin/core/types/file_format.dart';
 import 'package:mediatag_bin/core/types/file_stream.dart';
+import 'package:mediatag_bin/mediatag_bin.dart';
 
 /// file info
 class FileInfoRes {
@@ -11,6 +12,7 @@ class FileInfoRes {
   /// file info streams
   List<FileStream> get streams {
     List<dynamic> list = toMap['streams'] ?? [];
+    if (list.isEmpty) return [];
 
     return list.map((e) {
       final type = StreamCodecType.fromVal(e['codec_type'] ?? '');
@@ -22,7 +24,14 @@ class FileInfoRes {
   String get text => _source;
 
   ///source map
-  Map<String, dynamic> get toMap => jsonDecode(_source);
+  Map<String, dynamic> get toMap {
+    try {
+      return jsonDecode(_source);
+    } catch (e) {
+      MediatagBin.instance.showDebugLog('[FileInfoRes:toMap]: $e');
+    }
+    return {};
+  }
 
   /// file format
   FileFormat? get formatOrNull {

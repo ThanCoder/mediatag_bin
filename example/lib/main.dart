@@ -41,6 +41,8 @@ class _MyAppState extends State<MyApp> {
       infoText = res;
       setState(() {});
     }
+    
+
   }
 
   void fetchProb() async {

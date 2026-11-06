@@ -36,22 +36,20 @@ class FileFormat {
   }
 
   String get filename => _map['filename'];
-  int get nbStreams => .parse(_map['nb_streams']);
-  int get nbPrograms => .parse(_map['nb_programs']);
-  int get nbStreamGroups => .parse(_map['nb_stream_groups']);
+  int get nbStreams => _map.getIntOr('nb_streams', -1);
+  int get nbPrograms => _map.getIntOr('nb_programs', -1);
+  int get nbStreamGroups => _map.getIntOr('nb_stream_groups', -1);
   String get formatName => _map['format_name'];
-  double get startTime => .parse(_map['start_time']);
+  double get startTime => _map.getDoubleOr('start_time', 0);
 
   /// seconds
-  double get durationSecs => .parse(_map['duration']);
-  int get size => int.parse(_map['size']);
-  int get bitRate => .parse(_map['bit_rate']);
-  int get probeScore => .parse(_map['probe_score']);
+  double get durationSecs => _map.getDoubleOr('duration', 0);
+  int get size => _map.getIntOr('size', 0);
+  int get bitRate => _map.getIntOr('bit_rate', -1);
+  int get probeScore => _map.getIntOr('probe_score', -1);
 
   /// duration
-  Duration get duration {
-    return Duration(seconds: durationSecs.toInt());
-  }
+  Duration get duration => Duration(seconds: durationSecs.toInt());
 
   /// size lable
   String get szieLable => formatFileSizeLable(size);

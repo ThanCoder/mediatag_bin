@@ -18,6 +18,21 @@ class AudioB {
   ///   -vcodec copy \
   ///   pipe:1
   /// ```
+  Future<Uint8List?> getCoverArtBytesOrNull(String path) async {
+    final res = await getCoverArtBytes(path);
+    return res.fold<Uint8List?>(onErr: (err) => null, onOk: (val) => val);
+  }
+
+  ///
+  ///```bash
+  ///ffmpeg -v error \
+  ///   -i input.mp3 \
+  ///   -map 0:v:0 \
+  ///   -frames:v 1 \
+  ///   -f image2pipe \
+  ///   -vcodec copy \
+  ///   pipe:1
+  /// ```
   Future<Result<Uint8List, String>> getCoverArtBytes(String path) async {
     final p = await _ffmpeg.start([
       '-v',

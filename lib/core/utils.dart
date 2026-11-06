@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:android_native_path/android_native_path.dart';
+import 'package:mediatag_bin/mediatag_bin.dart';
 
 Future<String> getPlatformLibFullPath(String libName) async {
   if (Platform.isLinux || Platform.isWindows) {
@@ -42,18 +43,16 @@ Future<void> makeExecutableAndRun(
     final chmodResult = await Process.run('chmod', ['+x', filePath]);
 
     if (chmodResult.exitCode != 0) {
-      if (showDebugLog) {
-        print('Failed to grant execution permission: ${chmodResult.stderr}');
-      }
+      MediatagBin.instance.showDebugLog(
+        'Failed to grant execution permission: ${chmodResult.stderr}',
+      );
       return;
     }
-    if (showDebugLog) {
-      print('Successfully granted execution permission!: ${filePath.nameOnly}');
-    }
+    MediatagBin.instance.showDebugLog(
+      'Successfully granted execution permission!: ${filePath.nameOnly}',
+    );
   } catch (e) {
-    if (showDebugLog) {
-      print('Error: $e');
-    }
+    MediatagBin.instance.showDebugLog('[makeExecutableAndRun]: $e');
   }
 }
 
@@ -81,8 +80,9 @@ extension StringX on String {
 }
 
 extension MapX on Map<String, dynamic> {
-  String? getStringOrNull(String key) {
-    return _getOrNull<String>(key);
+  String getStringOr(String key, String def) {
+    final val = _getOrNull<String>(key);
+    return val ?? def;
   }
 
   int getIntOr(String key, int def) {
@@ -92,11 +92,6 @@ extension MapX on Map<String, dynamic> {
   double getDoubleOr(String key, double def) {
     return _getOr<double>(key, def);
   }
-
-  // T _get<T>(String key) {
-  //   final val = _getOrNull<T>(key);
-  //   return val!;
-  // }
 
   T _getOr<T>(String key, T def) {
     final val = _getOrNull<T>(key);
