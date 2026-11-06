@@ -1,7 +1,7 @@
 name: mediatag_bin
 description: "A Flutter/Dart package that provides FFmpeg and FFprobe binaries for media processing, metadata extraction, and thumbnail generation."
 repository: https://github.com/ThanCoder/mediatag_bin.git
-homepage:
+homepage: https://pub.dev/packages/mediatag_bin
 
 version: 0.1.0
 
