@@ -8,7 +8,8 @@ export NDK="$ANDROID_NDK_HOME"
 export API=24
 export TOOLCHAIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64"
 
-
+CFLAGS="-Os -ffunction-sections -fdata-sections" \
+LDFLAGS="-Wl,--gc-sections" \
 ./configure \
   --prefix="$PWD/build/android-arm64" \
   --target-os=android \
@@ -20,7 +21,11 @@ export TOOLCHAIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64"
   --ranlib="$TOOLCHAIN/bin/llvm-ranlib" \
   --strip="$TOOLCHAIN/bin/llvm-strip" \
   --nm="$TOOLCHAIN/bin/llvm-nm" \
+  --optflags="-Os" \
+  --extra-cflags="-ffunction-sections -fdata-sections" \
+  --extra-ldflags="-Wl,--gc-sections" \
   --enable-cross-compile \
+  \
   --enable-small \
   --enable-pic \
   --disable-shared \
@@ -31,40 +36,75 @@ export TOOLCHAIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64"
   --disable-network \
   --disable-autodetect \
   --disable-avdevice \
-  --enable-swresample \
-  --enable-swscale \
-  --disable-bsfs \
-  --disable-hwaccels \
-  --disable-parsers \
-  --enable-zlib \
   --enable-avutil \
   --enable-avcodec \
   --enable-avformat \
   --enable-avfilter \
-  --enable-filter=format \
-  --enable-filter=scale \
-  --enable-protocol=file \
+  --enable-swresample \
+  --enable-swscale \
+  --enable-zlib \
+  \
+  --disable-bsfs \
+  --disable-hwaccels \
+  --disable-parsers \
+  \
   --enable-parser=h264 \
+  --enable-parser=hevc \
   --enable-parser=mpegaudio \
+  --enable-parser=aac \
+  --enable-parser=vp9 \
+  --enable-parser=av1 \
+  \
   --enable-demuxer=mov \
   --enable-demuxer=matroska \
   --enable-demuxer=ogg \
   --enable-demuxer=mp3 \
   --enable-demuxer=flac \
   --enable-demuxer=wav \
+  --enable-demuxer=aac \
+  --enable-demuxer=image2 \
+  \
   --enable-muxer=mov \
   --enable-muxer=matroska \
+  --enable-muxer=ogg \
+  --enable-muxer=mp3 \
+  --enable-muxer=flac \
+  --enable-muxer=wav \
   --enable-muxer=image2 \
+  \
   --enable-decoder=h264 \
+  --enable-decoder=hevc \
+  --enable-decoder=mpeg4 \
+  --enable-decoder=vp8 \
+  --enable-decoder=vp9 \
+  --enable-decoder=av1 \
+  --enable-decoder=mjpeg \
+  --enable-decoder=png \
   --enable-decoder=aac \
-  --enable-encoder=mjpeg\
+  --enable-decoder=mp3 \
+  --enable-decoder=flac \
+  --enable-decoder=opus \
+  --enable-decoder=vorbis \
+  --enable-decoder=alac \
+  --enable-decoder=pcm_s16le \
+  --enable-decoder=pcm_s24le \
+  --enable-decoder=pcm_f32le \
+  \
+  --enable-encoder=mjpeg \
   --enable-encoder=png \
-  --optflags="-Os" \
-  --extra-cflags="-ffunction-sections -fdata-sections" \
-  --extra-ldflags="-Wl,--gc-sections"
+  --enable-encoder=flac \
+  \
+  --enable-filter=format \
+  --enable-filter=scale \
+  --enable-filter=select \
+  --enable-filter=signalstats \
+  --enable-filter=metadata \
+  --enable-filter=fps \
+  --enable-filter=thumbnail \
+  --enable-filter=transpose \
+  --enable-protocol=file
 
-make -j$(nproc)
-make install
+make -j$(nproc) && make install
 
 ## Android -> android-arm
 
@@ -72,6 +112,8 @@ export NDK="$ANDROID_NDK_HOME"
 export API=24
 export TOOLCHAIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64"
 
+CFLAGS="-Os -ffunction-sections -fdata-sections" \
+LDFLAGS="-Wl,--gc-sections" \
 ./configure \
   --prefix="$PWD/build/android-arm" \
   --target-os=android \
@@ -83,7 +125,11 @@ export TOOLCHAIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64"
   --ranlib="$TOOLCHAIN/bin/llvm-ranlib" \
   --strip="$TOOLCHAIN/bin/llvm-strip" \
   --nm="$TOOLCHAIN/bin/llvm-nm" \
+  --optflags="-Os" \
+  --extra-cflags="-ffunction-sections -fdata-sections" \
+  --extra-ldflags="-Wl,--gc-sections" \
   --enable-cross-compile \
+  \
   --enable-small \
   --enable-pic \
   --disable-shared \
@@ -94,37 +140,72 @@ export TOOLCHAIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64"
   --disable-network \
   --disable-autodetect \
   --disable-avdevice \
-  --enable-swresample \
-  --enable-swscale \
-  --disable-bsfs \
-  --disable-hwaccels \
-  --disable-parsers \
-  --enable-zlib \
   --enable-avutil \
   --enable-avcodec \
   --enable-avformat \
   --enable-avfilter \
-  --enable-filter=format \
-  --enable-filter=scale \
-  --enable-protocol=file \
+  --enable-swresample \
+  --enable-swscale \
+  --enable-zlib \
+  \
+  --disable-bsfs \
+  --disable-hwaccels \
+  --disable-parsers \
+  \
   --enable-parser=h264 \
+  --enable-parser=hevc \
   --enable-parser=mpegaudio \
+  --enable-parser=aac \
+  --enable-parser=vp9 \
+  --enable-parser=av1 \
+  \
   --enable-demuxer=mov \
   --enable-demuxer=matroska \
   --enable-demuxer=ogg \
   --enable-demuxer=mp3 \
   --enable-demuxer=flac \
   --enable-demuxer=wav \
+  --enable-demuxer=aac \
+  --enable-demuxer=image2 \
+  \
   --enable-muxer=mov \
   --enable-muxer=matroska \
+  --enable-muxer=ogg \
+  --enable-muxer=mp3 \
+  --enable-muxer=flac \
+  --enable-muxer=wav \
   --enable-muxer=image2 \
+  \
   --enable-decoder=h264 \
+  --enable-decoder=hevc \
+  --enable-decoder=mpeg4 \
+  --enable-decoder=vp8 \
+  --enable-decoder=vp9 \
+  --enable-decoder=av1 \
+  --enable-decoder=mjpeg \
+  --enable-decoder=png \
   --enable-decoder=aac \
-  --enable-encoder=mjpeg\
+  --enable-decoder=mp3 \
+  --enable-decoder=flac \
+  --enable-decoder=opus \
+  --enable-decoder=vorbis \
+  --enable-decoder=alac \
+  --enable-decoder=pcm_s16le \
+  --enable-decoder=pcm_s24le \
+  --enable-decoder=pcm_f32le \
+  \
+  --enable-encoder=mjpeg \
   --enable-encoder=png \
-  --optflags="-Os" \
-  --extra-cflags="-ffunction-sections -fdata-sections" \
-  --extra-ldflags="-Wl,--gc-sections"
+  --enable-encoder=flac \
+  \
+  --enable-filter=format \
+  --enable-filter=scale \
+  --enable-filter=select \
+  --enable-filter=signalstats \
+  --enable-filter=metadata \
+  --enable-filter=fps \
+  --enable-filter=thumbnail \
+  --enable-filter=transpose \
+  --enable-protocol=file
 
-make -j$(nproc)
-make install
+make -j$(nproc) && make install

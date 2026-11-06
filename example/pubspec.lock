@@ -81,6 +81,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.9"
+  dart_core_extensions:
+    dependency: "direct main"
+    description:
+      name: dart_core_extensions
+      sha256: d27e9be6d91fa69e67ab423a68c17805f7639bf3ec7d760a04e7144ba6b3a87d
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   fake_async:
     dependency: transitive
     description:
@@ -287,6 +295,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.12"
+  than_pkg_android:
+    dependency: "direct main"
+    description:
+      name: than_pkg_android
+      sha256: e1ab282bb559c9182d5f719827ec8c07852c2d2170a1b48a25f85d6f890d9be0
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   vector_math:
     dependency: transitive
     description:

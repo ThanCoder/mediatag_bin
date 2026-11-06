@@ -37,6 +37,8 @@ class MediatagBin implements IMediatagBin {
     _ffmpegLibPath = await getPlatformLibFullPath(ffmpegLibName);
     _ffprobeLibPath = await getPlatformLibFullPath(ffprobeLibName);
 
+    if (Platform.isAndroid) return;
+
     await makeExecutableAndRun(_ffmpegLibPath);
     await makeExecutableAndRun(_ffprobeLibPath);
   }

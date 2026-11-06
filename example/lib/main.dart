@@ -2,10 +2,12 @@
 
 import 'dart:io';
 
-import 'package:android_native_path/android_native_path.dart';
+import 'package:dart_core_extensions/dart_core_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:mediatag_b_example/v_thumbnail_page.dart';
 import 'package:mediatag_bin/mediatag_bin.dart';
 import 'package:mediatag_bin/result_t.dart';
+import 'package:than_pkg_android/than_pkg_android.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,10 +16,6 @@ void main() async {
 
   if (MediatagBin.instance.isSupported) {
     //check platforms
-  }
-
-  if (Platform.isAndroid) {
-    print('[:Dev]: ${await AndroidNativePath.instance.nativeLibraries}');
   }
 
   runApp(MaterialApp(home: const MyApp()));
@@ -41,8 +39,6 @@ class _MyAppState extends State<MyApp> {
       infoText = res;
       setState(() {});
     }
-    
-
   }
 
   void fetchProb() async {
@@ -58,30 +54,43 @@ class _MyAppState extends State<MyApp> {
     switch (res) {
       case Ok(value: final val):
         infoText = val.text;
-        print(val.format.filename);
+        final format = val.formatOrNull;
+        if (format != null) {
+          print(format.filename);
 
-        print(val.format.duration);
-        print(val.format.szieLable);
-        print('tag');
-        print(val.format.tag.titleOrNull);
-        print(val.format.tag.artistOrNull);
-        print(val.format.tag.genreOrNull);
-        print(val.format.tag.dateOrNull);
+          print(format.duration);
+          print(format.szieLable);
+          print('tag');
+          print(format.tag.titleOrNull);
+          print(format.tag.artistOrNull);
+          print(format.tag.genreOrNull);
+          print(format.tag.dateOrNull);
 
-        for (var stm in val.streams) {
-          print(stm.codecType);
-          print(stm.codecName);
-          print(stm.bitRate);
-          print(stm.channels);
-          print(stm.durationTs);
-          print(stm.duration);
+          for (var stm in val.streams) {
+            print(stm.codecType);
+            print(stm.codecName);
+            print(stm.bitRate);
+            print(stm.channels);
+            print(stm.durationTs);
+            print(stm.duration);
+          }
         }
+
         break;
       case Err(value: final err):
         infoText = err;
         break;
     }
     setState(() {});
+  }
+
+  String get folderPath {
+    if (Platform.isAndroid) {
+      return ThanPkgAndroid.getInstance.pathHandler.getDownloadPath().join(
+        'The Blacklist S3',
+      );
+    }
+    return '/home/thancoder/Downloads/New Folder';
   }
 
   @override
@@ -124,7 +133,8 @@ class _MyAppState extends State<MyApp> {
       runSpacing: 10,
       children: [
         FilledButton(
-          onPressed: () => showInfo('/home/thancoder/Videos/Jennifer Body.mp4'),
+          onPressed: () =>
+              showInfo('/home/thancoder/Videos/Jennifer Body.mp4-'),
           child: Text('Video Info'),
         ),
         FilledButton(
@@ -139,7 +149,7 @@ class _MyAppState extends State<MyApp> {
         ),
         FilledButton(
           onPressed: () async {
-            final res = await pkg.ffmpeg.video.genThumbnail(
+            final res = await pkg.ffmpeg.video.genSmartThumbnail(
               '/home/thancoder/Videos/Jennifer Body.mp4',
               '/home/thancoder/Videos/Jennifer Body',
             );
@@ -153,6 +163,19 @@ class _MyAppState extends State<MyApp> {
             }
           },
           child: Text('Gen Video Thumbnail'),
+        ),
+
+        FilledButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    VThumbnailPage(dir: Directory(folderPath)),
+              ),
+            );
+          },
+          child: Text('Go Thumbnail Page'),
         ),
       ],
     );

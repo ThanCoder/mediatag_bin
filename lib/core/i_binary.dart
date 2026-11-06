@@ -28,6 +28,7 @@ abstract class IBinary {
         stdoutEncoding: stdoutEncoding,
         stderrEncoding: stderrEncoding,
       );
+      // print('exitCode: ${p.exitCode}');
       final err = p.stderr.toString();
       if (err.isNotEmpty) {
         return Err(err);

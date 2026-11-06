@@ -40,8 +40,8 @@ class FileInfoRes {
     return .new(map);
   }
 
-  /// file format
-  FileFormat get format {
-    return formatOrNull!;
-  }
+  // /// file format
+  // FileFormat get format {
+  //   return formatOrNull!;
+  // }
 }
